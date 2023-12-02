@@ -39,7 +39,7 @@ def calculate(input: Iterable[Input], parse: Callable[[str], Input]) -> int:
 
 
 if __name__ == "__main__":
-    with open("input.txt", "rt") as f:
+    with open("day1/input.txt", "rt") as f:
         input = [l.strip() for l in f.readlines()]
 
     print(f"Part 1: {calculate(input, parse_line_part1)}")

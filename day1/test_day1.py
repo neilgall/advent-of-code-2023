@@ -1,5 +1,11 @@
 import pytest
-from day1 import parse_line_part1, parse_line_part2, calibration_value, Input, calculate
+from .__main__ import (
+    parse_line_part1,
+    parse_line_part2,
+    calibration_value,
+    Input,
+    calculate,
+)
 
 
 @pytest.mark.parametrize(
