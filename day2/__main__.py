@@ -1,6 +1,7 @@
 from dataclasses import dataclass
 from enum import Enum
 from parsy import decimal_digit, from_enum, seq, string, whitespace
+from typing import Iterable
 
 
 class Colour(Enum):
@@ -8,11 +9,26 @@ class Colour(Enum):
     GREEN = "green"
     BLUE = "blue"
 
+Turn = dict[Colour, int]
+
+
+DEFAULT_LOAD = {
+    Colour.RED: 12,
+    Colour.GREEN: 13,
+    Colour.BLUE: 14,
+}
+
 
 @dataclass
 class Game:
     id: int
-    turns: dict[Colour, int]
+    turns: list(Turn)
+
+    def is_possible(self, load: Turn):
+        def turn_is_possible(t: Turn) -> bool:
+            return all(t[c] <= load[c] for c in t.keys())
+
+        return all(turn_is_possible(t) for t in self.turns)
 
 
 def parse_game(input: str) -> Game:
@@ -24,8 +40,12 @@ def parse_game(input: str) -> Game:
     return game.parse(input)
 
 
+def part1(input: Iterable[Game]) -> int:
+    return sum(game.id for game in input if game.is_possible(DEFAULT_LOAD))
+
+
 if __name__ == "__main__":
     with open("day2/input.txt", "rt") as f:
         input = [parse_game(l.strip()) for l in f.readlines()]
 
-    print(f"Part 1: ")
+    print(f"Part 1: {part1(input)}")

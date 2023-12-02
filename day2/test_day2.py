@@ -34,3 +34,14 @@ from .__main__ import *
 def test_parse_game(input: str, expect: Game):
     assert parse_game(input) == expect
 
+
+@pytest.mark.parametrize('input,expect', [
+    ("Game 1: 3 blue, 4 red; 1 red, 2 green, 6 blue; 2 green", True),
+    ("Game 2: 1 blue, 2 green; 3 green, 4 blue, 1 red; 1 green, 1 blue", True),
+    ("Game 3: 8 green, 6 blue, 20 red; 5 blue, 4 red, 13 green; 5 green, 1 red", False),
+    ("Game 4: 1 green, 3 red, 6 blue; 3 green, 6 red; 3 green, 15 blue, 14 red", False),
+    ("Game 5: 6 red, 1 blue, 3 green; 2 blue, 1 red, 2 green", True)
+])
+def test_is_game_possible(input: str, expect: bool):
+    game = parse_game(input)
+    assert game.is_possible({ Colour.RED: 12, Colour.GREEN: 13, Colour.BLUE: 14 }) == expect
