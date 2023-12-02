@@ -31,6 +31,16 @@ class Game:
         return all(turn_is_possible(t) for t in self.turns)
 
 
+    def smallest_load_power(self) -> int:
+        red, blue, green = 0, 0, 0
+        for turn in self.turns:
+            red = max(red, turn.get(Colour.RED, 0))
+            blue = max(blue, turn.get(Colour.BLUE, 0))
+            green = max(green, turn.get(Colour.GREEN, 0))
+        
+        return red * blue * green
+            
+
 def parse_game(input: str) -> Game:
     integer = decimal_digit.at_least(1).map(lambda ds: int("".join(ds)))
     cubes = seq(integer << whitespace, from_enum(Colour)).map(lambda v: (v[1], v[0]))
@@ -44,8 +54,13 @@ def part1(input: Iterable[Game]) -> int:
     return sum(game.id for game in input if game.is_possible(DEFAULT_LOAD))
 
 
+def part2(input: Iterable[Game]) -> int:
+    return sum(game.smallest_load_power() for game in input)
+
+
 if __name__ == "__main__":
     with open("day2/input.txt", "rt") as f:
         input = [parse_game(l.strip()) for l in f.readlines()]
 
     print(f"Part 1: {part1(input)}")
+    print(f"Part 2: {part2(input)}")
