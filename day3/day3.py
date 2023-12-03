@@ -60,9 +60,10 @@ class Schematic:
 
     def find_gears(self) -> Generator[Gear, None, None]:
         for symbol in self.symbols:
-            adjacent_parts = [p for p in self.part_numbers if p.is_adjacent_to(symbol.pos)]
-            if len(adjacent_parts) == 2:
-                yield Gear(part1=adjacent_parts[0], part2=adjacent_parts[1])
+            if symbol.value == "*":
+                adjacent_parts = [p for p in self.part_numbers if p.is_adjacent_to(symbol.pos)]
+                if len(adjacent_parts) == 2:
+                    yield Gear(part1=adjacent_parts[0], part2=adjacent_parts[1])
 
 
 def parse_input(input: str) -> Schematic:
