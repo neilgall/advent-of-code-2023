@@ -57,13 +57,15 @@ def parse_input(input: str) -> Schematic:
                     part = None
                 if c != '.':
                     symbols.append(Symbol(pos=Position(x, y), value=c))
+        if part:
+            part_numbers.append(part)
+            part = None
 
     return Schematic(part_numbers=part_numbers, symbols=symbols)
 
 
 def part1(input: str) -> int:
     schematic = parse_input(input)
-    print(list(schematic.part_numbers[0].adjacent()))
     return sum(int(pn.value) for pn in schematic.valid_part_numbers())
 
 
