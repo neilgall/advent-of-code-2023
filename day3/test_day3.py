@@ -72,5 +72,15 @@ def test_valid_part_numbers():
     ]
 
 
+def test_find_gears():
+    schematic = parse_input(EXAMPLE)
+    gears = list((g.part1.value, g.part2.value) for g in schematic.find_gears())
+    assert gears == [("467", "35"), ("755", "598")]
+
+
 def test_part1():
     assert part1(EXAMPLE) == 4361
+
+
+def test_part2():
+    assert part2(EXAMPLE) == 467835
