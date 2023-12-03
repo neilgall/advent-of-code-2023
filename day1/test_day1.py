@@ -1,5 +1,5 @@
 import pytest
-from .__main__ import (
+from .day1 import (
     parse_line_part1,
     parse_line_part2,
     calibration_value,

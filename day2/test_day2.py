@@ -1,5 +1,5 @@
 import pytest
-from .__main__ import *
+from .day2 import *
 
 
 @pytest.mark.parametrize(
