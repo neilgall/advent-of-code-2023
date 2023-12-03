@@ -27,7 +27,7 @@ def test_parser():
             PartNumber(pos=Position(2, 6), value="592"),
             PartNumber(pos=Position(6, 7), value="755"),
             PartNumber(pos=Position(1, 9), value="664"),
-            PartNumber(pos=Position(5, 9), value="598")
+            PartNumber(pos=Position(5, 9), value="598"),
         ],
         symbols=[
             Symbol(pos=Position(3, 1), value="*"),
@@ -35,8 +35,8 @@ def test_parser():
             Symbol(pos=Position(3, 4), value="*"),
             Symbol(pos=Position(5, 5), value="+"),
             Symbol(pos=Position(3, 8), value="$"),
-            Symbol(pos=Position(5, 8), value="*")
-        ]
+            Symbol(pos=Position(5, 8), value="*"),
+        ],
     )
 
 
@@ -53,7 +53,7 @@ def test_adjacents():
         Position(1, 3),
         Position(2, 3),
         Position(3, 3),
-        Position(4, 3)
+        Position(4, 3),
     ]
 
 
@@ -68,7 +68,7 @@ def test_valid_part_numbers():
         PartNumber(pos=Position(2, 6), value="592"),
         PartNumber(pos=Position(6, 7), value="755"),
         PartNumber(pos=Position(1, 9), value="664"),
-        PartNumber(pos=Position(5, 9), value="598")
+        PartNumber(pos=Position(5, 9), value="598"),
     ]
 
 

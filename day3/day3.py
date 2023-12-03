@@ -9,8 +9,9 @@ class Position:
 
     def adjacent(self, width) -> Generator["Position", None, None]:
         def row(y: int) -> Generator["Position", None, None]:
-            for x in range(self.x-1, self.x+1+width):
+            for x in range(self.x - 1, self.x + 1 + width):
                 yield Position(x, y)
+
         yield from row(self.y - 1)
         yield Position(self.x - 1, self.y)
         yield Position(self.x + width, self.y)
@@ -26,7 +27,10 @@ class PartNumber:
         return self.pos.adjacent(len(self.value))
 
     def is_adjacent_to(self, pos: Position) -> bool:
-        positions = [Position(x, self.pos.y) for x in range(self.pos.x, self.pos.x+len(self.value))]
+        positions = [
+            Position(x, self.pos.y)
+            for x in range(self.pos.x, self.pos.x + len(self.value))
+        ]
         return any(p in positions for p in pos.adjacent(width=1))
 
 
@@ -37,7 +41,7 @@ class Symbol:
 
     def adjacent(self) -> Generator[Position, None, None]:
         return self.pos.adjacent(1)
-    
+
 
 @dataclass
 class Gear:
@@ -55,13 +59,17 @@ class Schematic:
 
     def valid_part_numbers(self) -> Generator[PartNumber, None, None]:
         for part in self.part_numbers:
-            if any(symbol.pos == pos for pos in part.adjacent() for symbol in self.symbols):
+            if any(
+                symbol.pos == pos for pos in part.adjacent() for symbol in self.symbols
+            ):
                 yield part
 
     def find_gears(self) -> Generator[Gear, None, None]:
         for symbol in self.symbols:
             if symbol.value == "*":
-                adjacent_parts = [p for p in self.part_numbers if p.is_adjacent_to(symbol.pos)]
+                adjacent_parts = [
+                    p for p in self.part_numbers if p.is_adjacent_to(symbol.pos)
+                ]
                 if len(adjacent_parts) == 2:
                     yield Gear(part1=adjacent_parts[0], part2=adjacent_parts[1])
 
@@ -81,7 +89,7 @@ def parse_input(input: str) -> Schematic:
                 if part:
                     part_numbers.append(part)
                     part = None
-                if c != '.':
+                if c != ".":
                     symbols.append(Symbol(pos=Position(x, y), value=c))
         if part:
             part_numbers.append(part)

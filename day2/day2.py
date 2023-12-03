@@ -9,6 +9,7 @@ class Colour(Enum):
     GREEN = "green"
     BLUE = "blue"
 
+
 Turn = dict[Colour, int]
 
 
@@ -30,23 +31,24 @@ class Game:
 
         return all(turn_is_possible(t) for t in self.turns)
 
-
     def smallest_load_power(self) -> int:
         red, blue, green = 0, 0, 0
         for turn in self.turns:
             red = max(red, turn.get(Colour.RED, 0))
             blue = max(blue, turn.get(Colour.BLUE, 0))
             green = max(green, turn.get(Colour.GREEN, 0))
-        
+
         return red * blue * green
-            
+
 
 def parse_game(input: str) -> Game:
     integer = decimal_digit.at_least(1).map(lambda ds: int("".join(ds)))
     cubes = seq(integer << whitespace, from_enum(Colour)).map(lambda v: (v[1], v[0]))
     turn = cubes.sep_by(string(",") << whitespace).map(dict)
     game_id = (string("Game") >> whitespace) >> integer << (string(":") << whitespace)
-    game = seq(game_id, turn.sep_by(string(";") << whitespace)).map(lambda v: Game(v[0], v[1]))
+    game = seq(game_id, turn.sep_by(string(";") << whitespace)).map(
+        lambda v: Game(v[0], v[1])
+    )
     return game.parse(input)
 
 
@@ -56,4 +58,3 @@ def part1(input: Iterable[Game]) -> int:
 
 def part2(input: Iterable[Game]) -> int:
     return sum(game.smallest_load_power() for game in input)
-

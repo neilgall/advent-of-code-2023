@@ -20,7 +20,9 @@ def parse_game(input: str) -> Game:
     cubes = seq(integer << whitespace, from_enum(Colour)).map(lambda v: (v[1], v[0]))
     turn = cubes.sep_by(string(",") << whitespace).map(dict)
     game_id = (string("Game") >> whitespace) >> integer << (string(":") << whitespace)
-    game = seq(game_id, turn.sep_by(string(";") << whitespace)).map(lambda v: Game(v[0], v[1]))
+    game = seq(game_id, turn.sep_by(string(";") << whitespace)).map(
+        lambda v: Game(v[0], v[1])
+    )
     return game.parse(input)
 
 
