@@ -10,6 +10,7 @@ EXAMPLE = [
     "Card 6: 31 18 13 56 72 | 74 77 10 23 35 67 36 11",
 ]
 
+
 @pytest.mark.parametrize(
     "input,expect",
     [
@@ -33,9 +34,7 @@ def test_parse(input: str, expect: Card):
     assert Card.parse(input) == expect
 
 
-@pytest.mark.parametrize(
-    "input,expect", zip(EXAMPLE, [8, 2, 2, 1, 0, 0])
-)
+@pytest.mark.parametrize("input,expect", zip(EXAMPLE, [8, 2, 2, 1, 0, 0]))
 def test_point_value(input, expect):
     card = Card.parse(input)
     assert card.point_value() == expect
@@ -47,9 +46,8 @@ def test_part1():
 
 def test_card_set():
     card_set = CardSet([Card.parse(c) for c in EXAMPLE])
-    assert card_set.counts == { 1:1, 2:1, 3:1, 4:1, 5:1, 6:1 }
+    assert card_set.counts == {1: 1, 2: 1, 3: 1, 4: 1, 5: 1, 6: 1}
 
 
 def test_part2():
     assert part2("\n".join(EXAMPLE)) == 30
-    

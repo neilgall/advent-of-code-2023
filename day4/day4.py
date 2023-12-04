@@ -32,13 +32,13 @@ class CardSet:
 
     def __init__(self, cards: list[Card]):
         self.cards = cards
-        self.counts = { (card.id): 1 for card in cards }
+        self.counts = {(card.id): 1 for card in cards}
 
     def total(self) -> int:
         for card in self.cards:
             for n in range(0, card.count_matching()):
-                if card.id+1+n in self.counts:
-                    self.counts[card.id+1+n] += self.counts[card.id]
+                if card.id + 1 + n in self.counts:
+                    self.counts[card.id + 1 + n] += self.counts[card.id]
         return sum(self.counts.values())
 
 
