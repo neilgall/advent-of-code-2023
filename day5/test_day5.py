@@ -177,3 +177,47 @@ def test_parser():
             )
         ]
     )
+
+
+@pytest.mark.parametrize("source,destination", [
+    (98, 50),
+    (99, 51),
+    (97, None),
+    (100, None)
+])
+def test_range_mapping(source: int, destination: int | None):
+    map = RangeMapping(destination_range_start=50, source_range_start=98, range_length=2)
+    assert map.translate(source) == destination
+
+
+@pytest.mark.parametrize("source,destination", [
+    (98, 50),
+    (99, 51),
+    (53, 55),
+    (110, 110)
+])
+def test_category_map(source: int, destination: int):
+    map = CategoryMap(
+        source_category=Category.SEED,
+        destination_category=Category.SOIL,
+        mappings=[
+            RangeMapping(destination_range_start=50, source_range_start=98, range_length=2),
+            RangeMapping(destination_range_start=52, source_range_start=50, range_length=48)
+        ]
+    )
+    assert map.translate(source) == destination
+
+
+@pytest.mark.parametrize("seed,location", [
+    (79, 82),
+    (14, 43),
+    (55, 86),
+    (13, 35)
+])
+def test_almanac(seed: int, location: int):
+    almanac = Almanac.parse(EXAMPLE)
+    assert almanac.find(Category.LOCATION, Category.SEED, seed) == location
+
+
+def test_part1():
+    assert part1(EXAMPLE) == 35
