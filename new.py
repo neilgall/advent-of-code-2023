@@ -9,8 +9,23 @@ if __name__ == "__main__":
 
     dir.mkdir(parents=True)
     (dir / "__init__.py").touch()
-    (dir / f"{today}.py").touch()
-    (dir / f"test_{today}.py").touch()
+
+    (dir / f"{today}.py").write_text(
+        """
+def part1(input: str) -> int:
+    return 0
+
+
+def part2(input:str) -> int:
+    return 0
+"""
+    )
+
+    (dir / f"test_{today}.py").write_text(
+        f"""import pytest
+from .{today} import *
+"""
+    )
 
     (dir / "__main__.py").write_text(
         f"""from {today} import part1, part2
