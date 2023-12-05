@@ -46,7 +46,7 @@ class CategoryMap:
         return next(valid_translations, value)
 
     def translate_range(self, value: range) -> Generator[range, None, None]:
-        candidate_breaks = set(
+        breaks = set(
             [
                 value.start,
                 value.stop,
@@ -54,11 +54,10 @@ class CategoryMap:
                 *(m.source_range.stop for m in self.mappings),
             ]
         )
-        breaks = sorted([b for b in candidate_breaks if value.start <= b <= value.stop])
-        start = breaks[0]
-        for b in breaks[1:]:
-            yield range(self.translate(start), self.translate(b - 1) + 1)
-            start = b
+        [start, *stops] = sorted([b for b in breaks if value.start <= b <= value.stop])
+        for stop in stops:
+            yield range(self.translate(start), self.translate(stop - 1) + 1)
+            start = stop
 
 
 @dataclass
