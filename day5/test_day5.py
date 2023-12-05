@@ -50,14 +50,14 @@ def test_parser():
                     RangeMapping(
                         destination_range_start=50,
                         source_range_start=98,
-                        range_length=2
+                        range_length=2,
                     ),
                     RangeMapping(
                         destination_range_start=52,
                         source_range_start=50,
-                        range_length=48
-                    )
-                ]
+                        range_length=48,
+                    ),
+                ],
             ),
             CategoryMap(
                 source_category=Category.SOIL,
@@ -66,19 +66,19 @@ def test_parser():
                     RangeMapping(
                         destination_range_start=0,
                         source_range_start=15,
-                        range_length=37
+                        range_length=37,
                     ),
                     RangeMapping(
                         destination_range_start=37,
                         source_range_start=52,
-                        range_length=2
+                        range_length=2,
                     ),
                     RangeMapping(
                         destination_range_start=39,
                         source_range_start=0,
-                        range_length=15
-                    )
-                ]
+                        range_length=15,
+                    ),
+                ],
             ),
             CategoryMap(
                 source_category=Category.FERTILIZER,
@@ -87,24 +87,20 @@ def test_parser():
                     RangeMapping(
                         destination_range_start=49,
                         source_range_start=53,
-                        range_length=8
+                        range_length=8,
                     ),
                     RangeMapping(
                         destination_range_start=0,
                         source_range_start=11,
-                        range_length=42
+                        range_length=42,
                     ),
                     RangeMapping(
-                        destination_range_start=42,
-                        source_range_start=0,
-                        range_length=7
+                        destination_range_start=42, source_range_start=0, range_length=7
                     ),
                     RangeMapping(
-                        destination_range_start=57,
-                        source_range_start=7,
-                        range_length=4
-                    )
-                ]
+                        destination_range_start=57, source_range_start=7, range_length=4
+                    ),
+                ],
             ),
             CategoryMap(
                 source_category=Category.WATER,
@@ -113,14 +109,14 @@ def test_parser():
                     RangeMapping(
                         destination_range_start=88,
                         source_range_start=18,
-                        range_length=7
+                        range_length=7,
                     ),
                     RangeMapping(
                         destination_range_start=18,
                         source_range_start=25,
-                        range_length=70
-                    )
-                ]
+                        range_length=70,
+                    ),
+                ],
             ),
             CategoryMap(
                 source_category=Category.LIGHT,
@@ -129,35 +125,31 @@ def test_parser():
                     RangeMapping(
                         destination_range_start=45,
                         source_range_start=77,
-                        range_length=23
+                        range_length=23,
                     ),
                     RangeMapping(
                         destination_range_start=81,
                         source_range_start=45,
-                        range_length=19
+                        range_length=19,
                     ),
                     RangeMapping(
                         destination_range_start=68,
                         source_range_start=64,
-                        range_length=13
-                    )
-                ]
+                        range_length=13,
+                    ),
+                ],
             ),
             CategoryMap(
                 source_category=Category.TEMPERATURE,
                 destination_category=Category.HUMIDITY,
                 mappings=[
                     RangeMapping(
-                        destination_range_start=0,
-                        source_range_start=69,
-                        range_length=1
+                        destination_range_start=0, source_range_start=69, range_length=1
                     ),
                     RangeMapping(
-                        destination_range_start=1,
-                        source_range_start=0,
-                        range_length=69
-                    )
-                ]
+                        destination_range_start=1, source_range_start=0, range_length=69
+                    ),
+                ],
             ),
             CategoryMap(
                 source_category=Category.HUMIDITY,
@@ -166,69 +158,70 @@ def test_parser():
                     RangeMapping(
                         destination_range_start=60,
                         source_range_start=56,
-                        range_length=37
+                        range_length=37,
                     ),
                     RangeMapping(
                         destination_range_start=56,
                         source_range_start=93,
-                        range_length=4
-                    )
-                ]
-            )
-        ]
+                        range_length=4,
+                    ),
+                ],
+            ),
+        ],
     )
 
 
-@pytest.mark.parametrize("source,destination", [
-    (98, 50),
-    (99, 51),
-    (97, None),
-    (100, None)
-])
+@pytest.mark.parametrize(
+    "source,destination", [(98, 50), (99, 51), (97, None), (100, None)]
+)
 def test_range_mapping_integers(source: int, destination: int | None):
-    map = RangeMapping(destination_range_start=50, source_range_start=98, range_length=2)
+    map = RangeMapping(
+        destination_range_start=50, source_range_start=98, range_length=2
+    )
     assert map.translate(source) == destination
 
 
-@pytest.mark.parametrize("mappings,source,destination", [
-    (
-        [RangeMapping(50, 98, 2), RangeMapping(52, 50, 48)],
-        range(0, 110),
-        [range(0, 50), range(52, 100), range(50, 52), range(100, 110)]
-    )
-])
-def test_range_mapping_ranges(mappings: list[RangeMapping], source: range, destination: list[range]):
+@pytest.mark.parametrize(
+    "mappings,source,destination",
+    [
+        (
+            [RangeMapping(50, 98, 2), RangeMapping(52, 50, 48)],
+            range(0, 110),
+            [range(0, 50), range(52, 100), range(50, 52), range(100, 110)],
+        )
+    ],
+)
+def test_range_mapping_ranges(
+    mappings: list[RangeMapping], source: range, destination: list[range]
+):
     map = CategoryMap(
         source_category=Category.SOIL,
         destination_category=Category.SOIL,
-        mappings=mappings
+        mappings=mappings,
     )
     assert list(map.translate_range(source)) == destination
 
-@pytest.mark.parametrize("source,destination", [
-    (98, 50),
-    (99, 51),
-    (53, 55),
-    (110, 110)
-])
+
+@pytest.mark.parametrize(
+    "source,destination", [(98, 50), (99, 51), (53, 55), (110, 110)]
+)
 def test_category_map(source: int, destination: int):
     map = CategoryMap(
         source_category=Category.SEED,
         destination_category=Category.SOIL,
         mappings=[
-            RangeMapping(destination_range_start=50, source_range_start=98, range_length=2),
-            RangeMapping(destination_range_start=52, source_range_start=50, range_length=48)
-        ]
+            RangeMapping(
+                destination_range_start=50, source_range_start=98, range_length=2
+            ),
+            RangeMapping(
+                destination_range_start=52, source_range_start=50, range_length=48
+            ),
+        ],
     )
     assert map.translate(source) == destination
 
 
-@pytest.mark.parametrize("seed,location", [
-    (79, 82),
-    (14, 43),
-    (55, 86),
-    (13, 35)
-])
+@pytest.mark.parametrize("seed,location", [(79, 82), (14, 43), (55, 86), (13, 35)])
 def test_almanac_find(seed: int, location: int):
     almanac = Almanac.parse(EXAMPLE)
     assert almanac.find(Category.LOCATION, Category.SEED, seed) == location

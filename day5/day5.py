@@ -29,7 +29,9 @@ class RangeMapping:
 
     @property
     def source_range(self) -> range:
-        return range(self.source_range_start, self.source_range_start + self.range_length)
+        return range(
+            self.source_range_start, self.source_range_start + self.range_length
+        )
 
 
 @dataclass
@@ -43,17 +45,19 @@ class CategoryMap:
         valid_translations = (v for v in translations if v is not None)
         return next(valid_translations, value)
 
-    def translate_range(self, value: range) -> Generator[range, None ,None]:
-        candidate_breaks = set([
-            value.start,
-            value.stop,
-            *(m.source_range.start for m in self.mappings),
-            *(m.source_range.stop for m in self.mappings)
-        ])
+    def translate_range(self, value: range) -> Generator[range, None, None]:
+        candidate_breaks = set(
+            [
+                value.start,
+                value.stop,
+                *(m.source_range.start for m in self.mappings),
+                *(m.source_range.stop for m in self.mappings),
+            ]
+        )
         breaks = sorted([b for b in candidate_breaks if value.start <= b <= value.stop])
         start = breaks[0]
         for b in breaks[1:]:
-            yield range(self.translate(start), self.translate(b-1)+1)
+            yield range(self.translate(start), self.translate(b - 1) + 1)
             start = b
 
 
@@ -67,19 +71,28 @@ class Almanac:
         integer = decimal_digit.at_least(1).map(lambda ds: int("".join(ds)))
         integer_list = integer.sep_by(whitespace)
         seeds_list = string("seeds:") >> whitespace >> integer_list
-        range_mapping = seq(integer << whitespace, integer << whitespace, integer).combine(RangeMapping)
+        range_mapping = seq(
+            integer << whitespace, integer << whitespace, integer
+        ).combine(RangeMapping)
         category_map = seq(
             from_enum(Category) << string("-to-"),
             from_enum(Category) << whitespace << string("map:") << whitespace,
-            range_mapping.sep_by(whitespace)
+            range_mapping.sep_by(whitespace),
         ).combine(CategoryMap)
-        almanac = seq(seeds_list << whitespace, category_map.sep_by(whitespace)).combine(Almanac)
+        almanac = seq(
+            seeds_list << whitespace, category_map.sep_by(whitespace)
+        ).combine(Almanac)
         return almanac.parse(input.strip())
 
     def mapping_from(self, category: Category) -> CategoryMap:
         return next(cm for cm in self.category_maps if cm.source_category == category)
 
-    def find(self, destination_category: Category, source_category: Category, source_value: int) -> int:
+    def find(
+        self,
+        destination_category: Category,
+        source_category: Category,
+        source_value: int,
+    ) -> int:
         if source_category == destination_category:
             return source_value
         else:
@@ -87,10 +100,15 @@ class Almanac:
             return self.find(
                 destination_category=destination_category,
                 source_category=category_map.destination_category,
-                source_value=category_map.translate(source_value)
+                source_value=category_map.translate(source_value),
             )
 
-    def find_range(self, destination_category: Category, source_category: Category, source_range: range) -> Generator[range, None, None]:
+    def find_range(
+        self,
+        destination_category: Category,
+        source_category: Category,
+        source_range: range,
+    ) -> Generator[range, None, None]:
         if source_category == destination_category:
             yield source_range
         else:
@@ -99,19 +117,26 @@ class Almanac:
                 yield from self.find_range(
                     destination_category=destination_category,
                     source_category=category_map.destination_category,
-                    source_range=destination_range
+                    source_range=destination_range,
                 )
 
 
 def part1(input: str) -> int:
     almanac = Almanac.parse(input)
-    return min(almanac.find(Category.LOCATION, Category.SEED, seed) for seed in almanac.seeds_list)
+    return min(
+        almanac.find(Category.LOCATION, Category.SEED, seed)
+        for seed in almanac.seeds_list
+    )
 
-def part2(input:str) -> int:
+
+def part2(input: str) -> int:
     almanac = Almanac.parse(input)
 
     def find_location_ranges():
-        seed_ranges = [range(start, start+length) for start,length in batched(almanac.seeds_list, 2)]
+        seed_ranges = [
+            range(start, start + length)
+            for start, length in batched(almanac.seeds_list, 2)
+        ]
         for seed_range in seed_ranges:
             yield from almanac.find_range(Category.LOCATION, Category.SEED, seed_range)
 
