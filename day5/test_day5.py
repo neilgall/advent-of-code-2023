@@ -41,7 +41,7 @@ humidity-to-location map:
 def test_parser():
     almanac = Almanac.parse(EXAMPLE)
     assert almanac == Almanac(
-        seeds_to_plant=[79, 14, 55, 13],
+        seeds_list=[79, 14, 55, 13],
         category_maps=[
             CategoryMap(
                 source_category=Category.SEED,
@@ -185,10 +185,25 @@ def test_parser():
     (97, None),
     (100, None)
 ])
-def test_range_mapping(source: int, destination: int | None):
+def test_range_mapping_integers(source: int, destination: int | None):
     map = RangeMapping(destination_range_start=50, source_range_start=98, range_length=2)
     assert map.translate(source) == destination
 
+
+@pytest.mark.parametrize("mappings,source,destination", [
+    (
+        [RangeMapping(50, 98, 2), RangeMapping(52, 50, 48)],
+        range(0, 110),
+        [range(0, 50), range(52, 100), range(50, 52), range(100, 110)]
+    )
+])
+def test_range_mapping_ranges(mappings: list[RangeMapping], source: range, destination: list[range]):
+    map = CategoryMap(
+        source_category=Category.SOIL,
+        destination_category=Category.SOIL,
+        mappings=mappings
+    )
+    assert list(map.translate_range(source)) == destination
 
 @pytest.mark.parametrize("source,destination", [
     (98, 50),
@@ -214,10 +229,14 @@ def test_category_map(source: int, destination: int):
     (55, 86),
     (13, 35)
 ])
-def test_almanac(seed: int, location: int):
+def test_almanac_find(seed: int, location: int):
     almanac = Almanac.parse(EXAMPLE)
     assert almanac.find(Category.LOCATION, Category.SEED, seed) == location
 
 
 def test_part1():
     assert part1(EXAMPLE) == 35
+
+
+def test_part2():
+    assert part2(EXAMPLE) == 46
