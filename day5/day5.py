@@ -113,11 +113,11 @@ class Almanac:
             yield source_range
         else:
             category_map = self.mapping_from(source_category)
-            for destination_range in category_map.translate_range(source_range):
+            for translated_range in category_map.translate_range(source_range):
                 yield from self.find_range(
                     destination_category=destination_category,
                     source_category=category_map.destination_category,
-                    source_range=destination_range,
+                    source_range=translated_range,
                 )
 
 
@@ -140,5 +140,4 @@ def part2(input: str) -> int:
         for seed_range in seed_ranges:
             yield from almanac.find_range(Category.LOCATION, Category.SEED, seed_range)
 
-    ranges = find_location_ranges()
-    return min(r.start for r in ranges)
+    return min(r.start for r in find_location_ranges())
