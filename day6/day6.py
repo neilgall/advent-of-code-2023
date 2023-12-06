@@ -27,10 +27,21 @@ def parse_input(input: str) -> list[Race]:
     return [Race(t, d) for t, d in zip(times, distances)]
 
 
+def parse_input2(input: str) -> Race:
+    bad_kerning_integer = decimal_digit.sep_by(whitespace.optional()).map(
+        lambda ds: int("".join(ds))
+    )
+    time = string("Time:") >> whitespace >> bad_kerning_integer
+    distance = string("Distance:") >> whitespace >> bad_kerning_integer
+    race = seq(time << whitespace, distance).combine(Race)
+    return race.parse(input.strip())
+
+
 def part1(input: str) -> int:
     races = parse_input(input)
     return reduce(operator.mul, (race.ways_to_win() for race in races))
 
 
 def part2(input: str) -> int:
-    return 0
+    race = parse_input2(input)
+    return race.ways_to_win()
