@@ -60,44 +60,63 @@ class Hand:
 
         elif 4 in counts:
             match jokers:
-                case 1: return Type.FIVE_OF_A_KIND
-                case _: return Type.FOUR_OF_A_KIND
+                case 1:
+                    return Type.FIVE_OF_A_KIND
+                case _:
+                    return Type.FOUR_OF_A_KIND
 
         elif 3 in counts:
             match jokers:
-                case 2: return Type.FIVE_OF_A_KIND
-                case 1: return Type.FOUR_OF_A_KIND
-                case _: return Type.FULL_HOUSE if 2 in counts else Type.THREE_OF_A_KIND
+                case 2:
+                    return Type.FIVE_OF_A_KIND
+                case 1:
+                    return Type.FOUR_OF_A_KIND
+                case _:
+                    return Type.FULL_HOUSE if 2 in counts else Type.THREE_OF_A_KIND
 
         elif sum(1 for n in counts if n == 2) == 2:
             match jokers:
-                case 1: return Type.FULL_HOUSE
-                case _: return Type.TWO_PAIR
+                case 1:
+                    return Type.FULL_HOUSE
+                case _:
+                    return Type.TWO_PAIR
 
         elif 2 in counts:
             match jokers:
-                case 3: return Type.FIVE_OF_A_KIND
-                case 2: return Type.FOUR_OF_A_KIND
-                case 1: return Type.THREE_OF_A_KIND
-                case _: return Type.ONE_PAIR
+                case 3:
+                    return Type.FIVE_OF_A_KIND
+                case 2:
+                    return Type.FOUR_OF_A_KIND
+                case 1:
+                    return Type.THREE_OF_A_KIND
+                case _:
+                    return Type.ONE_PAIR
         else:
             match jokers:
-                case 4: return Type.FIVE_OF_A_KIND
-                case 3: return Type.FOUR_OF_A_KIND
-                case 2: return Type.THREE_OF_A_KIND
-                case 1: return Type.ONE_PAIR
-                case _: return Type.HIGH_CARD
-        
+                case 4:
+                    return Type.FIVE_OF_A_KIND
+                case 3:
+                    return Type.FOUR_OF_A_KIND
+                case 2:
+                    return Type.THREE_OF_A_KIND
+                case 1:
+                    return Type.ONE_PAIR
+                case _:
+                    return Type.HIGH_CARD
 
     def __lt__(self, other: "Hand") -> int:
         d = self.type.value - other.type.value
-        if d < 0: return True
-        if d > 0: return False
+        if d < 0:
+            return True
+        if d > 0:
+            return False
 
         for c1, c2 in zip(self.cards, other.cards):
             d = self.config.rank(c1) - self.config.rank(c2)
-            if d < 0: return True
-            if d > 0: return False
+            if d < 0:
+                return True
+            if d > 0:
+                return False
         return False
 
 
@@ -110,7 +129,7 @@ def parse_input(input: str, config: Config) -> list[Hand]:
 
 def rank_and_score(hands: list[Hand]) -> int:
     hands = sorted(hands)
-    scores = [hand.bid * (rank+1) for rank, hand in enumerate(hands)]
+    scores = [hand.bid * (rank + 1) for rank, hand in enumerate(hands)]
     return sum(scores)
 
 
