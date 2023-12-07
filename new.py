@@ -5,7 +5,7 @@ from pathlib import Path
 
 if __name__ == "__main__":
     today = f"day{datetime.now().day}"
-    dir = "test" / Path(today)
+    dir = Path(today)
 
     dir.mkdir(parents=True)
     (dir / "__init__.py").touch()
