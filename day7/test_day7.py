@@ -83,6 +83,12 @@ def test_type_with_jokers(hand: str, hand_type: Type):
     assert Hand(PART2_CONFIG, list(hand), 0).type == hand_type
 
 
+def test_tie_break():
+    hand1 = Hand(PART2_CONFIG, list("JKKK2"), 0)
+    hand2 = Hand(PART2_CONFIG, list("QQQQ2"), 0)
+    assert hand1 < hand2
+
+
 @pytest.mark.parametrize(
     "hand1,hand2",
     [

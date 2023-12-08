@@ -62,7 +62,7 @@ class Hand:
             match jokers:
                 case 1:
                     return Type.FIVE_OF_A_KIND
-                case _:
+                case 0:
                     return Type.FOUR_OF_A_KIND
 
         elif 3 in counts:
@@ -71,14 +71,14 @@ class Hand:
                     return Type.FIVE_OF_A_KIND
                 case 1:
                     return Type.FOUR_OF_A_KIND
-                case _:
+                case 0:
                     return Type.FULL_HOUSE if 2 in counts else Type.THREE_OF_A_KIND
 
         elif sum(1 for n in counts if n == 2) == 2:
             match jokers:
                 case 1:
                     return Type.FULL_HOUSE
-                case _:
+                case 0:
                     return Type.TWO_PAIR
 
         elif 2 in counts:
@@ -89,7 +89,7 @@ class Hand:
                     return Type.FOUR_OF_A_KIND
                 case 1:
                     return Type.THREE_OF_A_KIND
-                case _:
+                case 0:
                     return Type.ONE_PAIR
         else:
             match jokers:
@@ -101,7 +101,7 @@ class Hand:
                     return Type.THREE_OF_A_KIND
                 case 1:
                     return Type.ONE_PAIR
-                case _:
+                case 0:
                     return Type.HIGH_CARD
 
     def __lt__(self, other: "Hand") -> int:
