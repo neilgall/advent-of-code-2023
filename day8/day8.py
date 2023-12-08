@@ -68,5 +68,7 @@ def part1(input: str) -> int:
 
 def part2(input: str) -> int:
     document = Document.parse(input)
-    solution = solve_congruence(*(document.count_steps(id) for id in document.start_nodes()))
+    solution = solve_congruence(
+        *(document.count_steps(id) for id in document.start_nodes())
+    )
     return solution[1]
