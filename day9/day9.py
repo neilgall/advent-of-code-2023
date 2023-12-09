@@ -1,6 +1,5 @@
 from dataclasses import dataclass
 from itertools import pairwise
-from operator import sub
 
 
 @dataclass
