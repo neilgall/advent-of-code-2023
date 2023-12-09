@@ -11,7 +11,7 @@ class History:
         return History(values=[int(n) for n in s.strip().split()])
 
     def diff(self) -> "History":
-        return History([p[1] - p[0] for p in pairwise(self.values)])
+        return History([n - m for m, n in pairwise(self.values)])
 
     def predict(self) -> int:
         if all(n == 0 for n in self.values):
