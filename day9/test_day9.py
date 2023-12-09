@@ -29,9 +29,19 @@ def test_predict(input,expect):
     assert h.predict() == expect
 
 
+@pytest.mark.parametrize("input,expect", [
+    ([0, 3, 6, 9, 12, 15], -3),
+    ([1, 3, 6, 10, 15, 21], 0),
+    ([10, 13, 16, 21, 30, 45], 5)
+])
+def test_predict_before(input,expect):
+    h = History(input)
+    assert h.predict_before() == expect
+
+
 def test_part1():
     assert part1(EXAMPLE) == 114
 
 
 def test_part2():
-    assert part2(EXAMPLE) == 0
+    assert part2(EXAMPLE) == 2

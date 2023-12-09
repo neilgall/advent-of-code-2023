@@ -20,6 +20,12 @@ class History:
         else:
             return self.values[-1] + self.diff().predict()
 
+    def predict_before(self) -> int:
+        if all(n == 0 for n in self.values):
+            return 0
+        else:
+            return self.values[0] - self.diff().predict_before()
+
 
 def part1(input: str) -> int:
     histories = [History.from_string(line) for line in input.split("\n")]
@@ -27,4 +33,5 @@ def part1(input: str) -> int:
 
 
 def part2(input: str) -> int:
-    return 0
+    histories = [History.from_string(line) for line in input.split("\n")]
+    return sum(h.predict_before() for h in histories)
