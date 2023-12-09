@@ -56,6 +56,7 @@ def test_type(hand: str, hand_type: Type):
     [
         ("AAAAA", Type.FIVE_OF_A_KIND),
         ("JAAAA", Type.FIVE_OF_A_KIND),
+        ("JJJJJ", Type.FIVE_OF_A_KIND),
         ("8AAAA", Type.FOUR_OF_A_KIND),
         ("A8AAA", Type.FOUR_OF_A_KIND),
         ("T55J5", Type.FOUR_OF_A_KIND),

@@ -55,7 +55,7 @@ class Hand:
             jokers = 0
         counts = counter.values()
 
-        if 5 in counts:
+        if jokers == 5 or 5 in counts:
             return Type.FIVE_OF_A_KIND
 
         elif 4 in counts:
