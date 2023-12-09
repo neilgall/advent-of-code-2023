@@ -19,22 +19,28 @@ def test_diff():
     assert h.diff().values == [3, 3, 3, 3, 3]
 
 
-@pytest.mark.parametrize("input,expect", [
-    ([0, 3, 6, 9, 12, 15], 18),
-    ([1, 3, 6, 10, 15, 21], 28),
-    ([10, 13, 16, 21, 30, 45], 68)
-])
-def test_predict(input,expect):
+@pytest.mark.parametrize(
+    "input,expect",
+    [
+        ([0, 3, 6, 9, 12, 15], 18),
+        ([1, 3, 6, 10, 15, 21], 28),
+        ([10, 13, 16, 21, 30, 45], 68),
+    ],
+)
+def test_predict(input, expect):
     h = History(input)
     assert h.predict() == expect
 
 
-@pytest.mark.parametrize("input,expect", [
-    ([0, 3, 6, 9, 12, 15], -3),
-    ([1, 3, 6, 10, 15, 21], 0),
-    ([10, 13, 16, 21, 30, 45], 5)
-])
-def test_predict_before(input,expect):
+@pytest.mark.parametrize(
+    "input,expect",
+    [
+        ([0, 3, 6, 9, 12, 15], -3),
+        ([1, 3, 6, 10, 15, 21], 0),
+        ([10, 13, 16, 21, 30, 45], 5),
+    ],
+)
+def test_predict_before(input, expect):
     h = History(input)
     assert h.predict_before() == expect
 
