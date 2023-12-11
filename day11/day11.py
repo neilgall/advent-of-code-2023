@@ -82,7 +82,7 @@ class Universe:
         starts = self.galaxies.copy()
         while starts:
             start = starts.pop()
-            for end in starts.copy():
+            for end in starts:
                 yield start.pos.path_distance_to(end.pos)
 
 
