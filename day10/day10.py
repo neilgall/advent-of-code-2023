@@ -112,8 +112,8 @@ class Field:
 
     def __str__(self) -> str:
         out = ""
-        for y in range(0, self.extent.y+1):
-            for x in range(0, self.extent.x+1):
+        for y in range(0, self.extent.y + 1):
+            for x in range(0, self.extent.x + 1):
                 d = self.connections(Pos(x, y))
                 out += "X" if d else "."
             out += "\n"
@@ -175,14 +175,18 @@ class Field:
                 new_pos = pos * 2
                 yield new_pos, tile
                 if Directions.EAST in tile.connected:
-                    yield new_pos.go(Directions.EAST), Tile(connected=Directions.EAST | Directions.WEST)
+                    yield new_pos.go(Directions.EAST), Tile(
+                        connected=Directions.EAST | Directions.WEST
+                    )
                 if Directions.SOUTH in tile.connected:
-                    yield new_pos.go(Directions.SOUTH), Tile(connected=Directions.NORTH | Directions.SOUTH)
+                    yield new_pos.go(Directions.SOUTH), Tile(
+                        connected=Directions.NORTH | Directions.SOUTH
+                    )
 
         return Field(
-            tiles = dict(tiles()),
-            start = self.start * 2,
-            extent = Pos(self.extent.x * 2 + 1, self.extent.y * 2 + 1)
+            tiles=dict(tiles()),
+            start=self.start * 2,
+            extent=Pos(self.extent.x * 2 + 1, self.extent.y * 2 + 1),
         )
 
     def find_loop(self) -> list[Pos]:
@@ -205,11 +209,11 @@ class Field:
     def is_inside_loop(self, pos: Pos) -> tuple[bool, set[Pos]]:
         def debug(pos: Pos, checked: set[Pos], unchecked: set[Pos]):
             out = ""
-            for y in range(0, self.extent.y+1):
-                for x in range(0, self.extent.x+1):
+            for y in range(0, self.extent.y + 1):
+                for x in range(0, self.extent.x + 1):
                     p = Pos(x, y)
                     if p == pos:
-                        out += "X";
+                        out += "X"
                     elif p in checked:
                         out += "@"
                     elif p in unchecked:
@@ -229,16 +233,25 @@ class Field:
             next = unchecked.pop()
             assert next not in checked
             assert next not in self.tiles
-            if next.x == 0 or next.y == 0 or next.x == self.extent.x or next.y == self.extent.y:
+            if (
+                next.x == 0
+                or next.y == 0
+                or next.x == self.extent.x
+                or next.y == self.extent.y
+            ):
                 # print(f"outside {len(checked)}\n{debug(next, checked, unchecked)}")
                 return False, checked | unchecked
-            else:        
+            else:
                 checked.add(next)
-                neighbours = set(n for n in self.open_neighbours(next) if n not in checked and not n in self.tiles)
+                neighbours = set(
+                    n
+                    for n in self.open_neighbours(next)
+                    if n not in checked and not n in self.tiles
+                )
                 unchecked |= neighbours
         # print(f"inside {len(checked)}\n{debug(next, checked, unchecked)}")
         return True, checked
-        
+
     def positions_enclosed_by_loop(self) -> Generator[Pos, None, None]:
         determined = set()
         for pos in self.positions():
@@ -247,7 +260,6 @@ class Field:
                 determined |= checked
                 if inside:
                     yield from checked
-
 
     def positions_enclosed_by_loop_with_squeezing(self) -> Generator[Pos, None, None]:
         field = self.zoom()
@@ -258,6 +270,7 @@ class Field:
                 determined |= checked
                 if inside:
                     yield from (c for c in checked if c.x % 2 == 0 and c.y % 2 == 0)
+
 
 def part1(input: str) -> int:
     field = Field.parse(input)

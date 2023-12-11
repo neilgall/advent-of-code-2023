@@ -91,7 +91,7 @@ def test_parser():
             Pos(3, 3): Tile(connected=Directions.NORTH | Directions.WEST),
         },
         start=Pos(0, 0),
-        extent=Pos(4, 4)
+        extent=Pos(4, 4),
     )
 
 
@@ -109,7 +109,7 @@ def test_infer_connections():
             Pos(3, 3): Tile(connected=Directions.NORTH | Directions.WEST),
         },
         start=Pos(1, 1),
-        extent=Pos(4, 4)
+        extent=Pos(4, 4),
     )
 
 
@@ -175,20 +175,26 @@ def test_is_inside_loop():
     assert field.is_inside_loop(Pos(8, 6)) == (True, set([Pos(7, 6), Pos(8, 6)]))
 
 
-@pytest.mark.parametrize("input,count", [
-    (PART2_EXAMPLE, 4),
-    (PART2_EXAMPLE_WITH_SQUEEZING, 12),
-])
+@pytest.mark.parametrize(
+    "input,count",
+    [
+        (PART2_EXAMPLE, 4),
+        (PART2_EXAMPLE_WITH_SQUEEZING, 12),
+    ],
+)
 def test_positions_enclosed_by_loop(input, count):
     field = Field.parse(input)
     positions = list(field.positions_enclosed_by_loop())
     assert len(positions) == count
 
 
-@pytest.mark.parametrize("input,count", [
-    (PART2_EXAMPLE, 4),
-    (PART2_EXAMPLE_WITH_SQUEEZING, 4),
-])
+@pytest.mark.parametrize(
+    "input,count",
+    [
+        (PART2_EXAMPLE, 4),
+        (PART2_EXAMPLE_WITH_SQUEEZING, 4),
+    ],
+)
 def test_positions_enclosed_by_loop_with_squeezing(input, count):
     field = Field.parse(input)
     positions = list(field.positions_enclosed_by_loop_with_squeezing())
@@ -199,9 +205,12 @@ def test_part1():
     assert part1(COMPLEX_EXAMPLE) == 8
 
 
-@pytest.mark.parametrize("input,count", [
-    (PART2_LARGE_EXAMPLE, 8),
-    (PART2_LARGE_EXAMPLE2, 10),
-])
+@pytest.mark.parametrize(
+    "input,count",
+    [
+        (PART2_LARGE_EXAMPLE, 8),
+        (PART2_LARGE_EXAMPLE2, 10),
+    ],
+)
 def test_part2(input, count):
     assert part2(input) == count
