@@ -1,10 +1,12 @@
 #!/usr/bin/env python
 from datetime import datetime
 from pathlib import Path
+from sys import argv
 
 
 if __name__ == "__main__":
-    today = f"day{datetime.now().day}"
+    day = argv[1] if len(argv) > 1 else datetime.now().day
+    today = f"day{day}"
     dir = Path(today)
 
     dir.mkdir(parents=True)
